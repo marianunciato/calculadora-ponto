@@ -1,70 +1,74 @@
-# Getting Started with Create React App
+# Calculadora de Ponto (React)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Uma calculadora de ponto simples feita em React para ajudar a controlar as horas trabalhadas ao longo do dia, considerando entrada, saída para almoço, volta do almoço e cálculo da saída final com base em 8 horas de trabalho.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## O que faz?
 
-### `yarn start`
+- Permite registrar horários de entrada, saída para almoço e retorno do almoço.
+- Salva esses horários no `localStorage` para manter os dados mesmo após atualizar a página.
+- Calcula em tempo real o progresso das 8 horas trabalhadas, mostrando uma barra de progresso.
+- Mostra as horas trabalhadas até o momento.
+- Calcula o horário da saída final considerando o intervalo de almoço.
+- Permite limpar os dados salvos para começar do zero.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Como usar
 
-### `yarn test`
+1. Preencha os campos:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+   - **Entrada:** horário que você começou a trabalhar.
+   - **Almoço:** horário que você saiu para almoçar.
+   - **2ª Entrada:** horário que você voltou do almoço.
 
-### `yarn build`
+2. A barra de progresso atualiza automaticamente mostrando o quanto do seu expediente já foi cumprido (considerando 8 horas).
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3. Clique em **"Calcular saída final"** para ver a hora em que você poderá sair do trabalho.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+4. Use **"Limpar dados"** para apagar tudo e começar novamente.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `yarn eject`
+## Tecnologias
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- React (Hooks: useState, useEffect)
+- Tailwind CSS para estilização simples e responsiva
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Como funciona por trás dos panos?
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- Os horários são armazenados no `localStorage` para manter persistência.
+- Cada vez que um horário muda, o progresso é recalculado.
+- A lógica de cálculo considera:
+  - Tempo trabalhado antes do almoço
+  - Tempo trabalhado após o almoço (se já voltou)
+  - Total de 8 horas (480 minutos) para completar o expediente
+- Atualização do progresso acontece a cada minuto automaticamente.
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Estrutura do código
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- `entrada`, `saidaAlmoco`, `voltaAlmoco` — estados para os horários.
+- `progresso` — porcentagem do dia trabalhado.
+- `horasTrabalhadas` — tempo total trabalhado formatado.
+- `saidaFinal` — horário calculado para saída do trabalho.
+- `ultimaAtualizacao` — horário da última atualização do progresso.
+- Funções auxiliares para conversão entre `HH:mm` e minutos.
+- Função para limpar campos e localStorage.
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Rodando localmente
 
-### Analyzing the Bundle Size
+1. Clone o repositório.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+2. Instale as dependências:
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```bash
+npm install
+# ou
+yarn
