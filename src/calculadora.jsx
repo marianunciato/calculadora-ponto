@@ -163,7 +163,7 @@ export default function CalculadoraDePonto() {
 					<label className="flex justify-center block text-sm font-medium text-white/80 mb-1">Progresso do dia</label>
 					<div className="relative h-6 bg-white/60 rounded-full overflow-hidden">
 						<div
-							className="h-full bg-teal-300 transition-all duration-500 ease-out"
+							className="h-full bg-teal-400 transition-all duration-500 ease-out"
 							style={{ width: `${progresso}%` }}
 						></div>
 						<div className="absolute inset-0 flex items-center justify-center text-black font-bold text-sm">
