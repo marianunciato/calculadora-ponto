@@ -126,7 +126,7 @@ export default function CalculadoraDePonto() {
 				<a className="bg-white w-full py-3 rounded-2xl font-semibold hover:bg-slate-100 flex justify-center items-center"
 				href="https://awstou.ifractal.com.br/fulltime/phonto.php" target="_blank">Bater o ponto</a>
 			</div>
-			<div className="max-w-md mx-auto px-8 pt-10 pb-8 bg-white/30 backdrop-blur-sm rounded-2xl border border-white/40 shadow-md space-y-4">
+			<div className="max-w-md mx-auto px-8 pt-10 pb-8 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-md space-y-4">
 				<h2 className="text-xl font-bold text-center text-white">Calculadora de Ponto</h2>
 
 				<div className="flex flex-row gap-3">
@@ -136,7 +136,7 @@ export default function CalculadoraDePonto() {
 							type="time"
 							value={entrada}
 							onChange={(e) => setEntrada(e.target.value)}
-							className="w-full bg-slate-100/70 py-2 pl-4 pr-3 font-semibold rounded-full"
+							className="w-full bg-white/10 py-2 pl-4 pr-3 font-medium rounded-full border border-white/20 text-white"
 						/>
 					</div>
 					<div className="w-full">
@@ -145,7 +145,7 @@ export default function CalculadoraDePonto() {
 							type="time"
 							value={saidaAlmoco}
 							onChange={(e) => setSaidaAlmoco(e.target.value)}
-							className="w-full bg-slate-100/70 py-2 pl-4 pr-3 font-semibold rounded-full"
+							className="w-full bg-white/10 py-2 pl-4 pr-3 font-medium rounded-full border border-white/20 text-white"
 						/>
 					</div>
 					<div className="w-full">
@@ -154,19 +154,19 @@ export default function CalculadoraDePonto() {
 							type="time"
 							value={retornoAlmoco}
 							onChange={(e) => setRetornoAlmoco(e.target.value)}
-							className="w-full bg-slate-100/70 py-2 pl-4 pr-3 font-semibold rounded-full"
+							className="w-full bg-white/10 py-2 pl-4 pr-3 font-medium rounded-full border border-white/20 text-white"
 						/>
 					</div>
 				</div>
 
 				<div className="w-full">
 					<label className="flex justify-center block text-sm font-medium text-white/80 mb-1">Progresso do dia</label>
-					<div className="relative h-6 bg-white/60 rounded-full overflow-hidden">
+					<div className="relative h-6 bg-white/10 rounded-full overflow-hidden border border-white/20">
 						<div
 							className="h-full bg-teal-400 transition-all duration-500 ease-out"
 							style={{ width: `${progresso}%` }}
 						></div>
-						<div className="absolute inset-0 flex items-center justify-center text-black font-bold text-sm">
+						<div className="absolute inset-0 flex items-center justify-center text-white font-bold text-sm">
 							{progresso}%
 						</div>
 					</div>
@@ -200,7 +200,7 @@ export default function CalculadoraDePonto() {
 				</div>
 
 				{saidaFinal && (
-					<p className="text-center font-semibold text-white border bg-white/20 border-white/50 rounded-2xl p-4">
+					<p className="text-center font-semibold text-white border bg-white/10 border-white/20 rounded-2xl p-4">
 						<p className="text-white/90"> Saída final: </p> <p className="text-3xl font-bold">{saidaFinal}</p>
 					</p>
 				)}

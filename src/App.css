@@ -5,4 +5,5 @@
 .main__page {
     background-image: url("../public/wallpaper-pop.jpg");
     background-size: cover;
+    backdrop-filter: blur(10px);
 }
