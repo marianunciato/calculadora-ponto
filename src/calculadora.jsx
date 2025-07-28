@@ -3,42 +3,47 @@ import { useState, useEffect } from 'react';
 export default function CalculadoraDePonto() {
 	const [entrada, setEntrada] = useState('');
 	const [saidaAlmoco, setSaidaAlmoco] = useState('');
-	const [voltaAlmoco, setVoltaAlmoco] = useState('');
+	const [retornoAlmoco, setRetornoAlmoco] = useState('');
 	const [saidaFinal, setSaidaFinal] = useState('');
 	const [progresso, setProgresso] = useState(0);
 	const [ultimaAtualizacao, setUltimaAtualizacao] = useState('');
 	const [horasTrabalhadas, setHorasTrabalhadas] = useState('00:00');
 
-	useEffect(() => {
-		const savedEntrada = localStorage.getItem('entrada');
-		const savedSaidaAlmoco = localStorage.getItem('saidaAlmoco');
-		const savedVoltaAlmoco = localStorage.getItem('voltaAlmoco');
+	const storageKeys = {
+		entrada: 'ponto_entrada',
+		saidaAlmoco: 'ponto_saida_almoco',
+		retornoAlmoco: 'ponto_retorno_almoco',
+		saidaFinal: 'ponto_saida_final',
+	};
 
-		if (savedEntrada) setEntrada(savedEntrada);
-		if (savedSaidaAlmoco) setSaidaAlmoco(savedSaidaAlmoco);
-		if (savedVoltaAlmoco) setVoltaAlmoco(savedVoltaAlmoco);
+	useEffect(() => {
+		setEntrada(localStorage.getItem(storageKeys.entrada) || '');
+		setSaidaAlmoco(localStorage.getItem(storageKeys.saidaAlmoco) || '');
+		setRetornoAlmoco(localStorage.getItem(storageKeys.retornoAlmoco) || '');
+		setSaidaFinal(localStorage.getItem(storageKeys.saidaFinal) || '');
 	}, []);
 
 	useEffect(() => {
-		localStorage.setItem('entrada', entrada);
+		localStorage.setItem(storageKeys.entrada, entrada);
 	}, [entrada]);
 
 	useEffect(() => {
-		localStorage.setItem('saidaAlmoco', saidaAlmoco);
+		localStorage.setItem(storageKeys.saidaAlmoco, saidaAlmoco);
 	}, [saidaAlmoco]);
 
 	useEffect(() => {
-		localStorage.setItem('voltaAlmoco', voltaAlmoco);
-	}, [voltaAlmoco]);
+		localStorage.setItem(storageKeys.retornoAlmoco, retornoAlmoco);
+	}, [retornoAlmoco]);
+
+	useEffect(() => {
+		localStorage.setItem(storageKeys.saidaFinal, saidaFinal);
+	}, [saidaFinal]);
 
 	useEffect(() => {
 		calcularProgresso();
-	}, [entrada, saidaAlmoco, voltaAlmoco]);
-
-	useEffect(() => {
 		const intervalo = setInterval(calcularProgresso, 60000);
 		return () => clearInterval(intervalo);
-	}, []);
+	}, [entrada, saidaAlmoco, retornoAlmoco]);
 
 	function toMinutes(hora) {
 		if (!hora || !hora.includes(':')) return 0;
@@ -67,12 +72,12 @@ export default function CalculadoraDePonto() {
 			const saidaAlmocoMin = toMinutes(saidaAlmoco);
 			const entradaMin = toMinutes(entrada);
 			const tempoAntesAlmoco = saidaAlmocoMin - entradaMin;
-			if (!voltaAlmoco) {
+			if (!retornoAlmoco) {
 				trabalhado = tempoAntesAlmoco;
 			} else {
-				const voltaAlmocoMin = toMinutes(voltaAlmoco);
+				const retornoAlmocoMin = toMinutes(retornoAlmoco);
 				const agoraMin = toMinutes(`${agora.getHours()}:${agora.getMinutes()}`);
-				const depoisAlmoco = Math.max(0, agoraMin - voltaAlmocoMin);
+				const depoisAlmoco = Math.max(0, agoraMin - retornoAlmocoMin);
 				trabalhado = tempoAntesAlmoco + depoisAlmoco;
 			}
 		}
@@ -87,18 +92,18 @@ export default function CalculadoraDePonto() {
 	}
 
 	function calcularSaidaFinal() {
-		if (!entrada || !saidaAlmoco || !voltaAlmoco) {
-			setSaidaFinal('Preencha todos os campos');
+		if (!entrada || !saidaAlmoco || !retornoAlmoco) {
+			setSaidaFinal('Preencha os campos');
 			return;
 		}
 
 		const entradaMin = toMinutes(entrada);
 		const saidaAlmocoMin = toMinutes(saidaAlmoco);
-		const voltaAlmocoMin = toMinutes(voltaAlmoco);
+		const retornoAlmocoMin = toMinutes(retornoAlmoco);
 
 		const tempoAntesDoAlmoco = saidaAlmocoMin - entradaMin;
 		const restante = 480 - tempoAntesDoAlmoco;
-		const horarioSaidaFinal = voltaAlmocoMin + restante;
+		const horarioSaidaFinal = retornoAlmocoMin + restante;
 
 		setSaidaFinal(fromMinutes(horarioSaidaFinal));
 	}
@@ -106,86 +111,100 @@ export default function CalculadoraDePonto() {
 	function limparCampos() {
 		setEntrada('');
 		setSaidaAlmoco('');
-		setVoltaAlmoco('');
+		setRetornoAlmoco('');
 		setSaidaFinal('');
-		localStorage.removeItem('entrada');
-		localStorage.removeItem('saidaAlmoco');
-		localStorage.removeItem('voltaAlmoco');
 		setProgresso(0);
 		setUltimaAtualizacao('');
 		setHorasTrabalhadas('00:00');
+
+		Object.values(storageKeys).forEach((key) => localStorage.removeItem(key));
 	}
 
 	return (
-		<div className="max-w-md mx-auto p-4 bg-white rounded-2xl shadow-md space-y-4">
-			<h2 className="text-xl font-bold text-center">Calculadora de Ponto</h2>
-			<div className="flex flex-row gap-3">
-				<div className="primeiraEntrada">
-					<h3 className="flex justify-center item-center pb-1 font-bold">Entrada</h3>
-					<input
-						type="time"
-						value={entrada}
-						onChange={(e) => setEntrada(e.target.value)}
-						placeholder="Entrada"
-						className="w-full bg-slate-100 py-2 pl-4 pr-3 rounded-full"
-					/>
-				</div>
-				<div className="saidaAlmoco">
-					<h3 className="flex justify-center item-center pb-1 font-bold">Almoço</h3>
-					<input
-						type="time"
-						value={saidaAlmoco}
-						onChange={(e) => setSaidaAlmoco(e.target.value)}
-						placeholder="Saída para almoço"
-						className="w-full bg-slate-100 py-2 pl-4 pr-3 rounded-full"
-					/>
-				</div>
-				<div className="segundaEntrada">
-					<h3 className="flex justify-center item-center pb-1 font-bold">2° Entrada</h3>
-					<input
-						type="time"
-						value={voltaAlmoco}
-						onChange={(e) => setVoltaAlmoco(e.target.value)}
-						placeholder="Volta do almoço"
-						className="w-full bg-slate-100 py-2 pl-4 pr-3 rounded-full"
-					/>
-				</div>				
-			</div>			
-			<div className="w-full">
-				<label className="block text-sm font-medium text-gray-700 mb-1">Progresso do dia</label>
-				<div className="relative h-6 bg-slate-200 rounded-full overflow-hidden">
-					<div
-						className="h-full bg-blue-500 transition-all duration-500 ease-out"
-						style={{ width: `${progresso}%` }}
-					></div>
-					<div className="absolute inset-0 flex items-center justify-center text-white font-bold text-sm">
-						{progresso}%
+		<div className="flex flex-col">
+			<div className="botao__ponto flex justify-center py-4">
+				<a className="bg-white w-full py-3 rounded-2xl font-semibold hover:bg-slate-100 flex justify-center items-center"
+				href="https://awstou.ifractal.com.br/fulltime/phonto.php" target="_blank">Bater o ponto</a>
+			</div>
+			<div className="max-w-md mx-auto px-8 pt-10 pb-8 bg-white/30 backdrop-blur-sm rounded-2xl border border-white/40 shadow-md space-y-4">
+				<h2 className="text-xl font-bold text-center text-white">Calculadora de Ponto</h2>
+
+				<div className="flex flex-row gap-3">
+					<div className="w-full">
+						<h3 className="text-center pb-1 font-bold text-white">Entrada</h3>
+						<input
+							type="time"
+							value={entrada}
+							onChange={(e) => setEntrada(e.target.value)}
+							className="w-full bg-slate-100/70 py-2 pl-4 pr-3 font-semibold rounded-full"
+						/>
+					</div>
+					<div className="w-full">
+						<h3 className="text-center pb-1 font-bold text-white">Saída Almoço</h3>
+						<input
+							type="time"
+							value={saidaAlmoco}
+							onChange={(e) => setSaidaAlmoco(e.target.value)}
+							className="w-full bg-slate-100/70 py-2 pl-4 pr-3 font-semibold rounded-full"
+						/>
+					</div>
+					<div className="w-full">
+						<h3 className="text-center pb-1 font-bold text-white">Retorno</h3>
+						<input
+							type="time"
+							value={retornoAlmoco}
+							onChange={(e) => setRetornoAlmoco(e.target.value)}
+							className="w-full bg-slate-100/70 py-2 pl-4 pr-3 font-semibold rounded-full"
+						/>
 					</div>
 				</div>
+
+				<div className="w-full">
+					<label className="flex justify-center block text-sm font-medium text-white/80 mb-1">Progresso do dia</label>
+					<div className="relative h-6 bg-white/60 rounded-full overflow-hidden">
+						<div
+							className="h-full bg-teal-300 transition-all duration-500 ease-out"
+							style={{ width: `${progresso}%` }}
+						></div>
+						<div className="absolute inset-0 flex items-center justify-center text-black font-bold text-sm">
+							{progresso}%
+						</div>
+					</div>
+				</div>
+
+				{ultimaAtualizacao && (
+					<p className="text-center text-sm text-white/60">
+						Última atualização: {ultimaAtualizacao}
+					</p>
+				)}
+
+				{horasTrabalhadas && (
+					<p className="text-center text-lg font-semibold text-slate-100">
+						Horas trabalhadas: {horasTrabalhadas}
+					</p>
+				)}
+
+				<div className="flex flex-row gap-3">
+					<button
+						onClick={calcularSaidaFinal}
+						className="w-48 bg-purple-500 text-white font-bold py-2 px-4 rounded-full hover:bg-purple-600"
+					>
+						Calcular saída final
+					</button>
+					<button
+						onClick={limparCampos}
+						className="w-auto bg-orange-500 text-white font-bold py-2 px-4 rounded-full hover:bg-orange-600"
+					>
+						Limpar dados
+					</button>
+				</div>
+
+				{saidaFinal && (
+					<p className="text-center font-semibold text-white border bg-white/20 border-white/50 rounded-2xl p-4">
+						<p className="text-white/90"> Saída final: </p> <p className="text-3xl font-bold">{saidaFinal}</p>
+					</p>
+				)}
 			</div>
-			{ultimaAtualizacao && (
-				<div className="text-center text-sm text-gray-500">
-					Última atualização: {ultimaAtualizacao}
-				</div>
-			)}
-			{horasTrabalhadas && (
-				<div className="text-center text-lg font-semibold text-green-600">
-					⏱️ Horas trabalhadas: {horasTrabalhadas}
-				</div>
-			)}
-			<div className="flex flex-row gap-3">
-				<button onClick={calcularSaidaFinal} className="w-48 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-					Calcular saída final
-				</button>
-				<button onClick={limparCampos} className="w-auto bg-slate-300 text-black py-2 px-4 rounded hover:bg-gray-400">
-					Limpar dados
-				</button>
-			</div>			
-			{saidaFinal && (
-				<div className="text-center text-lg font-semibold">
-					🕔 Saída final: {saidaFinal}
-				</div>
-			)}
 		</div>
 	);
 }

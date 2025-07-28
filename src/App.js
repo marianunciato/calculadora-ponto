@@ -1,11 +1,12 @@
+import './App.css';
 import React from 'react';
-import Calculadora from './calculadora';
+import CalculadoraDePonto from './calculadora';
 
 const App = React.memo(() => {
 
     return (
-        <div className="flex justify-center items-center h-screen w-screen bg-slate-900">
-            <Calculadora/>
+        <div className="main__page flex justify-center items-center h-screen w-screen bg-slate-900">
+            <CalculadoraDePonto/>
         </div>
     );
 });
