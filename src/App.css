@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 .main__page {
+    position: relative;
     background-image: url("../public/wallpaper-pop.jpg");
     background-size: cover;
-    backdrop-filter: blur(10px);
+    overflow: hidden;
 }

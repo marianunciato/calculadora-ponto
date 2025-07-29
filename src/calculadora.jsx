@@ -210,7 +210,7 @@ export default function CalculadoraDePonto() {
 					</a>
 				</div>
 			</div>
-			<div className='bg-black w-screen py-2 flex justify-center' style={{fontVariationSettings: "'FILL' 1"}}>
+			<div className='bg-slate-950 w-screen py-2 flex justify-center' style={{fontVariationSettings: "'FILL' 1"}}>
 				<a href="https://www.linkedin.com/in/marianunciato/" target="_blank">
 					<span className="material-symbols-outlined text-white hover:text-yellow-300 cursor-pointer">
 						star
