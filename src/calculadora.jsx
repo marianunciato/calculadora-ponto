@@ -121,89 +121,101 @@ export default function CalculadoraDePonto() {
 	}
 
 	return (
-		<div className="flex flex-col">
-			<div className="botao__ponto flex justify-center py-4">
-				<a className="bg-white w-full py-3 rounded-2xl font-semibold hover:bg-slate-100 flex justify-center items-center"
-				href="https://awstou.ifractal.com.br/fulltime/phonto.php" target="_blank">Bater o ponto</a>
-			</div>
-			<div className="max-w-md mx-auto px-8 pt-10 pb-8 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-md space-y-4">
-				<h2 className="text-xl font-bold text-center text-white">Calculadora de Ponto</h2>
-
-				<div className="flex flex-row gap-3">
-					<div className="w-full">
-						<h3 className="text-center pb-1 font-bold text-white">Entrada</h3>
-						<input
-							type="time"
-							value={entrada}
-							onChange={(e) => setEntrada(e.target.value)}
-							className="w-full bg-white/10 py-2 pl-4 pr-3 font-medium rounded-full border border-white/20 text-white"
-						/>
-					</div>
-					<div className="w-full">
-						<h3 className="text-center pb-1 font-bold text-white">Saída Almoço</h3>
-						<input
-							type="time"
-							value={saidaAlmoco}
-							onChange={(e) => setSaidaAlmoco(e.target.value)}
-							className="w-full bg-white/10 py-2 pl-4 pr-3 font-medium rounded-full border border-white/20 text-white"
-						/>
-					</div>
-					<div className="w-full">
-						<h3 className="text-center pb-1 font-bold text-white">Retorno</h3>
-						<input
-							type="time"
-							value={retornoAlmoco}
-							onChange={(e) => setRetornoAlmoco(e.target.value)}
-							className="w-full bg-white/10 py-2 pl-4 pr-3 font-medium rounded-full border border-white/20 text-white"
-						/>
-					</div>
-				</div>
-
-				<div className="w-full">
-					<label className="flex justify-center block text-sm font-medium text-white/80 mb-1">Progresso do dia</label>
-					<div className="relative h-6 bg-white/10 rounded-full overflow-hidden border border-white/20">
-						<div
-							className="h-full bg-teal-400 transition-all duration-500 ease-out"
-							style={{ width: `${progresso}%` }}
-						></div>
-						<div className="absolute inset-0 flex items-center justify-center text-white font-bold text-sm">
-							{progresso}%
+		<div className="flex flex-col justify-between h-screen">
+			<div className="text-white/0 flex justify-center">.</div>
+			<div className="flex flex-col max-w-md mx-auto justify-center items-center">
+				<div className="px-8 py-8 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-lg space-y-4">
+					<h2 className="text-xl font-bold text-center text-white">Calculadora de Ponto</h2>
+					<div className="flex flex-row gap-3">
+						<div className="w-full">
+							<h3 className="text-center pb-1 font-bold text-white">Entrada</h3>
+							<input
+								type="time"
+								value={entrada}
+								onChange={(e) => setEntrada(e.target.value)}
+								className="w-full bg-white/10 py-2 pl-4 pr-3 font-medium rounded-full border border-white/20 text-white"
+							/>
+						</div>
+						<div className="w-full">
+							<h3 className="text-center pb-1 font-bold text-white">Saída Almoço</h3>
+							<input
+								type="time"
+								value={saidaAlmoco}
+								onChange={(e) => setSaidaAlmoco(e.target.value)}
+								className="w-full bg-white/10 py-2 pl-4 pr-3 font-medium rounded-full border border-white/20 text-white"
+							/>
+						</div>
+						<div className="w-full">
+							<h3 className="text-center pb-1 font-bold text-white">Retorno</h3>
+							<input
+								type="time"
+								value={retornoAlmoco}
+								onChange={(e) => setRetornoAlmoco(e.target.value)}
+								className="w-full bg-white/10 py-2 pl-4 pr-3 font-medium rounded-full border border-white/20 text-white"
+							/>
 						</div>
 					</div>
+
+					<div className="w-full">
+						<label className="flex justify-center text-sm font-medium text-white/80 mb-1">Progresso do dia</label>
+						<div className="relative h-6 bg-white/10 rounded-full overflow-hidden border border-white/20">
+							<div
+								className="h-full bg-teal-400 transition-all duration-500 ease-out"
+								style={{ width: `${progresso}%` }}
+							></div>
+							<div className="absolute inset-0 flex items-center justify-center text-white font-bold text-sm">
+								{progresso}%
+							</div>
+						</div>
+					</div>
+
+					{ultimaAtualizacao && (
+						<p className="text-center text-sm text-white/60">
+							Última atualização: {ultimaAtualizacao}
+						</p>
+					)}
+
+					{horasTrabalhadas && (
+						<p className="text-center text-lg font-semibold text-slate-100">
+							Horas trabalhadas: {horasTrabalhadas}
+						</p>
+					)}
+
+					<div className="flex flex-row gap-3 justify-center w-full">
+						<button
+							onClick={calcularSaidaFinal}
+							className="w-auto bg-purple-500/80 text-white font-bold py-2 px-4 rounded-full hover:bg-purple-600/70"
+						>
+							Calcular saída final
+						</button>
+						<button
+							onClick={limparCampos}
+							className="w-auto text-white font-bold py-2 px-4 rounded-full hover:bg-white/10"
+						>
+							Limpar dados
+						</button>
+					</div>
+
+					{saidaFinal && (
+						<p className="text-center font-semibold text-white border bg-white/10 border-white/20 rounded-2xl p-4">
+							<p className="text-white/90"> Saída final: </p> <p className="text-3xl font-bold">{saidaFinal}</p>
+						</p>
+					)}
 				</div>
-
-				{ultimaAtualizacao && (
-					<p className="text-center text-sm text-white/60">
-						Última atualização: {ultimaAtualizacao}
-					</p>
-				)}
-
-				{horasTrabalhadas && (
-					<p className="text-center text-lg font-semibold text-slate-100">
-						Horas trabalhadas: {horasTrabalhadas}
-					</p>
-				)}
-
-				<div className="flex flex-row gap-3">
-					<button
-						onClick={calcularSaidaFinal}
-						className="w-48 bg-purple-500 text-white font-bold py-2 px-4 rounded-full hover:bg-purple-600"
-					>
-						Calcular saída final
-					</button>
-					<button
-						onClick={limparCampos}
-						className="w-auto bg-orange-500 text-white font-bold py-2 px-4 rounded-full hover:bg-orange-600"
-					>
-						Limpar dados
-					</button>
+				<div className="botao__ponto flex justify-center py-4 w-full" style={{fontVariationSettings: "'FILL' 1"}}>
+					<a className="bg-white backdrop-blur-sm w-full py-3 rounded-2xl font-semibold hover:bg-white/90 flex justify-center items-center gap-2"
+					href="https://awstou.ifractal.com.br/fulltime/phonto.php" target="_blank">
+						Bater o ponto
+						<span class="material-symbols-outlined"> exit_to_app </span>
+					</a>
 				</div>
-
-				{saidaFinal && (
-					<p className="text-center font-semibold text-white border bg-white/10 border-white/20 rounded-2xl p-4">
-						<p className="text-white/90"> Saída final: </p> <p className="text-3xl font-bold">{saidaFinal}</p>
-					</p>
-				)}
+			</div>
+			<div className='bg-black w-screen py-2 flex justify-center' style={{fontVariationSettings: "'FILL' 1"}}>
+				<a href="https://www.linkedin.com/in/marianunciato/" target="_blank">
+					<span className="material-symbols-outlined text-white hover:text-yellow-300 cursor-pointer">
+						star
+					</span>
+				</a>	
 			</div>
 		</div>
 	);
