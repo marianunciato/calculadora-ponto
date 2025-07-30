@@ -8,6 +8,7 @@ export default function CalculadoraDePonto() {
 	const [progresso, setProgresso] = useState(0);
 	const [ultimaAtualizacao, setUltimaAtualizacao] = useState('');
 	const [horasTrabalhadas, setHorasTrabalhadas] = useState('00:00');
+	const [temaClaro, setTemaClaro] = useState(false);
 
 	const storageKeys = {
 		entrada: 'ponto_entrada',
@@ -44,6 +45,25 @@ export default function CalculadoraDePonto() {
 		const intervalo = setInterval(calcularProgresso, 60000);
 		return () => clearInterval(intervalo);
 	}, [entrada, saidaAlmoco, retornoAlmoco]);
+
+	useEffect(() => {
+		const temaSalvo = localStorage.getItem("temaClaro");
+		if (temaSalvo === "true") setTemaClaro(true);
+	  }, []);
+	  
+	  useEffect(() => {
+		localStorage.setItem("temaClaro", temaClaro);
+		document.documentElement.classList.toggle("dark", !temaClaro);
+	}, [temaClaro]);
+	  
+
+	useEffect(() => {
+		if (temaClaro) {
+			document.documentElement.classList.remove("dark");
+		} else {
+			document.documentElement.classList.add("dark");
+		}
+	}, [temaClaro]);
 
 	function toMinutes(hora) {
 		if (!hora || !hora.includes(':')) return 0;
@@ -122,61 +142,71 @@ export default function CalculadoraDePonto() {
 
 	return (
 		<div className="flex flex-col justify-between h-screen">
-			<div className="text-white/0 flex justify-center">.</div>
+			<div className="text-white/0 flex justify-center">
+				<span
+					onClick={() => setTemaClaro(!temaClaro)}
+					className="fixed top-4 right-4 cursor-pointer text-3xl text-yellow-400 dark:text-white hover:scale-110 transition-transform"
+					style={{ fontVariationSettings: "'FILL' 1" }}
+					>
+						<span className="material-symbols-outlined">
+							{temaClaro ? "dark_mode" : "light_mode"}
+						</span>
+				</span>
+			</div>
 			<div className="flex flex-col max-w-md mx-auto justify-center items-center">
-				<div className="px-8 py-8 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-lg space-y-4">
-					<h2 className="text-xl font-bold text-center text-white">Calculadora de Ponto</h2>
+				<div className="px-8 py-8 bg-white/30 dark:bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-lg space-y-4">
+					<h2 className="text-xl font-bold text-center dark:text-white text-zinc-900">Calculadora de Ponto</h2>
 					<div className="flex flex-row gap-3">
 						<div className="w-full">
-							<h3 className="text-center pb-1 font-bold text-white">Entrada</h3>
+							<h3 className="text-center pb-1 font-bold dark:text-white text-zinc-900/80">Entrada</h3>
 							<input
 								type="time"
 								value={entrada}
 								onChange={(e) => setEntrada(e.target.value)}
-								className="w-full bg-white/10 py-2 pl-4 pr-3 font-medium rounded-full border border-white/20 text-white"
+								className="w-full bg-white/10 py-2 pl-4 pr-3 font-medium rounded-full border border-white/20 dark:text-white text-zinc-900"
 							/>
 						</div>
 						<div className="w-full">
-							<h3 className="text-center pb-1 font-bold text-white">Saída Almoço</h3>
+							<h3 className="text-center pb-1 font-bold dark:text-white text-zinc-900/80">Saída Almoço</h3>
 							<input
 								type="time"
 								value={saidaAlmoco}
 								onChange={(e) => setSaidaAlmoco(e.target.value)}
-								className="w-full bg-white/10 py-2 pl-4 pr-3 font-medium rounded-full border border-white/20 text-white"
+								className="w-full bg-white/10 py-2 pl-4 pr-3 font-medium rounded-full border border-white/20 dark:text-white text-zinc-900"
 							/>
 						</div>
 						<div className="w-full">
-							<h3 className="text-center pb-1 font-bold text-white">Retorno</h3>
+							<h3 className="text-center pb-1 font-bold dark:text-white text-zinc-900/80">Retorno</h3>
 							<input
 								type="time"
 								value={retornoAlmoco}
 								onChange={(e) => setRetornoAlmoco(e.target.value)}
-								className="w-full bg-white/10 py-2 pl-4 pr-3 font-medium rounded-full border border-white/20 text-white"
+								className="w-full bg-white/10 py-2 pl-4 pr-3 font-medium rounded-full border border-white/20 dark:text-white text-zinc-900"
 							/>
 						</div>
 					</div>
 
 					<div className="w-full">
-						<label className="flex justify-center text-sm font-medium text-white/80 mb-1">Progresso do dia</label>
+						<label className="flex justify-center text-sm font-medium dark:text-white/80 mb-1 text-zinc-900/70">Progresso do dia</label>
 						<div className="relative h-6 bg-white/10 rounded-full overflow-hidden border border-white/20">
 							<div
 								className="h-full bg-teal-400 transition-all duration-500 ease-out"
 								style={{ width: `${progresso}%` }}
 							></div>
-							<div className="absolute inset-0 flex items-center justify-center text-white font-bold text-sm">
+							<div className="absolute inset-0 flex items-center justify-center dark:text-white font-bold text-sm text-zinc-900">
 								{progresso}%
 							</div>
 						</div>
 					</div>
 
 					{ultimaAtualizacao && (
-						<p className="text-center text-sm text-white/60">
+						<p className="text-center text-sm dark:text-white/60 text-zinc-900">
 							Última atualização: {ultimaAtualizacao}
 						</p>
 					)}
 
 					{horasTrabalhadas && (
-						<p className="text-center text-lg font-semibold text-slate-100">
+						<p className="text-center text-lg font-semibold dark:text-slate-100 text-zinc-900">
 							Horas trabalhadas: {horasTrabalhadas}
 						</p>
 					)}
@@ -190,15 +220,15 @@ export default function CalculadoraDePonto() {
 						</button>
 						<button
 							onClick={limparCampos}
-							className="w-auto text-white font-bold py-2 px-4 rounded-full hover:bg-white/10"
+							className="w-auto dark:text-white font-bold py-2 px-4 rounded-full hover:bg-white/10 text-zinc-900"
 						>
 							Limpar dados
 						</button>
 					</div>
 
 					{saidaFinal && (
-						<p className="text-center font-semibold text-white border bg-white/10 border-white/20 rounded-2xl p-4">
-							<p className="text-white/90"> Saída final: </p> <p className="text-3xl font-bold">{saidaFinal}</p>
+						<p className="text-center font-semibold dark:text-white border bg-white/10 border-white/20 rounded-2xl p-4 text-zinc-900">
+							<p className="dark:text-white/90 text-zinc-900/80"> Saída final: </p> <p className="text-3xl font-bold">{saidaFinal}</p>
 						</p>
 					)}
 				</div>
@@ -210,9 +240,9 @@ export default function CalculadoraDePonto() {
 					</a>
 				</div>
 			</div>
-			<div className='bg-slate-950 w-screen py-2 flex justify-center' style={{fontVariationSettings: "'FILL' 1"}}>
+			<div className='bg-slate-100 dark:bg-slate-950 w-screen py-2 flex justify-center' style={{fontVariationSettings: "'FILL' 1"}}>
 				<a href="https://www.linkedin.com/in/marianunciato/" target="_blank">
-					<span className="material-symbols-outlined text-white hover:text-yellow-300 cursor-pointer">
+					<span className="material-symbols-outlined dark:text-white hover:text-yellow-300 cursor-pointer text-zinc-900">
 						star
 					</span>
 				</a>	
