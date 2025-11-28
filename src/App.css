@@ -4,11 +4,11 @@
 
 .main__page {
     position: relative;
-    background-image: url("../public/wallpaper-color.jpg");
+    background-image: url("../public/background-light.jpg");
     background-size: cover;
     overflow: hidden;
 }
 
 .dark .main__page {
-    background-image: url("../public/wallpaper-pop.jpg");
+    background-image: url("../public/background-dark.jpg");
 }
