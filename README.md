@@ -1,74 +1,105 @@
-# Calculadora de Ponto (React)
+🕒 Calculadora de Ponto Inteligente
 
-Uma calculadora de ponto simples feita em React para ajudar a controlar as horas trabalhadas ao longo do dia, considerando entrada, saída para almoço, volta do almoço e cálculo da saída final com base em 8 horas de trabalho.
+Uma aplicação web moderna e intuitiva desenvolvida para auxiliar profissionais no controle de jornada de trabalho. Com um design Glassmorphism elegante, o app oferece cálculos automáticos, persistência de dados local e notificações inteligentes.
 
----
+✨ Funcionalidades Principais
 
-## O que faz?
+Cálculo em Tempo Real: Previsão automática do horário de saída assim que os dados são inseridos.
 
-- Permite registrar horários de entrada, saída para almoço e retorno do almoço.
-- Salva esses horários no `localStorage` para manter os dados mesmo após atualizar a página.
-- Calcula em tempo real o progresso das 8 horas trabalhadas, mostrando uma barra de progresso.
-- Mostra as horas trabalhadas até o momento.
-- Calcula o horário da saída final considerando o intervalo de almoço.
-- Permite limpar os dados salvos para começar do zero.
+Persistência Automática: Seus horários são salvos no navegador (LocalStorage). Se você fechar a aba e voltar, tudo estará lá.
 
----
+Histórico Inteligente: Ao abrir o app em um novo dia, os dados do dia anterior são arquivados automaticamente no histórico antes de limpar a tela.
 
-## Como usar
+Modo Jornada Direta: Configuração para quem trabalha em horário corrido (sem pausa de almoço).
 
-1. Preencha os campos:
+Notificações de Navegador: Receba alertas quando faltarem 15 minutos para a saída e quando a jornada for concluída.
 
-   - **Entrada:** horário que você começou a trabalhar.
-   - **Almoço:** horário que você saiu para almoçar.
-   - **2ª Entrada:** horário que você voltou do almoço.
+Countdown Dinâmico: Barra de progresso visual que muda de cor conforme a meta diária se aproxima.
 
-2. A barra de progresso atualiza automaticamente mostrando o quanto do seu expediente já foi cumprido (considerando 8 horas).
+Temas Dark/Light: Alternância de temas com backgrounds abstratos de alta qualidade.
 
-3. Clique em **"Calcular saída final"** para ver a hora em que você poderá sair do trabalho.
+🛠️ Tecnologias Utilizadas
 
-4. Use **"Limpar dados"** para apagar tudo e começar novamente.
+React.js: Biblioteca principal para construção da interface e gerenciamento de estado.
 
----
+Tailwind CSS: Framework de utilitários para estilização rápida, responsiva e moderna.
 
-## Tecnologias
+Hooks Personalizados: Uso avançado de useState, useEffect, useCallback e useRef para lógica de timer e persistência.
 
-- React (Hooks: useState, useEffect)
-- Tailwind CSS para estilização simples e responsiva
+Notification API: Integração nativa com o navegador para alertas desktop.
 
----
+🚀 Como Executar o Projeto
 
-## Como funciona por trás dos panos?
+Para rodar este projeto localmente, siga os passos abaixo:
 
-- Os horários são armazenados no `localStorage` para manter persistência.
-- Cada vez que um horário muda, o progresso é recalculado.
-- A lógica de cálculo considera:
-  - Tempo trabalhado antes do almoço
-  - Tempo trabalhado após o almoço (se já voltou)
-  - Total de 8 horas (480 minutos) para completar o expediente
-- Atualização do progresso acontece a cada minuto automaticamente.
+Pré-requisitos
 
----
+Node.js instalado (v14 ou superior)
 
-## Estrutura do código
+NPM ou Yarn
 
-- `entrada`, `saidaAlmoco`, `voltaAlmoco` — estados para os horários.
-- `progresso` — porcentagem do dia trabalhado.
-- `horasTrabalhadas` — tempo total trabalhado formatado.
-- `saidaFinal` — horário calculado para saída do trabalho.
-- `ultimaAtualizacao` — horário da última atualização do progresso.
-- Funções auxiliares para conversão entre `HH:mm` e minutos.
-- Função para limpar campos e localStorage.
+Instalação
 
----
+Clone o repositório:
 
-## Rodando localmente
+git clone [https://github.com/SEU-USUARIO/calculadora-ponto.git](https://github.com/SEU-USUARIO/calculadora-ponto.git)
 
-1. Clone o repositório.
 
-2. Instale as dependências:
+Entre na pasta do projeto:
 
-```bash
+cd calculadora-ponto
+
+
+Instale as dependências:
+
 npm install
 # ou
-yarn
+yarn install
+
+
+Inicie o servidor de desenvolvimento:
+
+npm start
+# ou
+yarn start
+
+
+O aplicativo estará disponível em http://localhost:3000.
+
+⚙️ Estrutura do Código
+
+O projeto foi refatorado para seguir boas práticas de componentização:
+
+App.jsx: Gerenciador de estado global e lógica principal.
+
+components/:
+
+TopBar: Controles de tema e acesso a modais.
+
+TimeInputBlock: Inputs reutilizáveis para horários.
+
+ProgressBar: Visualização gráfica do progresso diário.
+
+ExitDisplay: Mostrador de hora de saída e countdown.
+
+Modais: Histórico e Configurações.
+
+utils/: Funções puras para cálculos de tempo e manipulação de strings.
+
+🎨 Design System
+
+O visual foi construído com foco na estética Glassmorphism:
+
+Transparências e desfoque de fundo (backdrop-blur).
+
+Bordas sutis e sombras profundas para hierarquia visual.
+
+Paleta de cores em tons de Roxo, Ciano e Zinco para um visual futurista e limpo.
+
+📄 Licença
+
+Este projeto está sob a licença MIT. Sinta-se livre para usar e modificar.
+
+<p align="center">
+Feito com 💜 por <a href="https://www.linkedin.com/in/marianunciato/" target="_blank">Maria Nunciato</a>
+</p>
